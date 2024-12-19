@@ -6,7 +6,7 @@ function Layout({ children }) {
   return (
     <>
       <div>
-        <div className="sm:w-64  sm:block fixed ">
+        <div className="hidden sm:w-64  sm:block fixed ">
           <SideNav />
         </div>
         <div className="sm:ml-64 ">
