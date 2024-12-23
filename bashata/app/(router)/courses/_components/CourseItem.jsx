@@ -25,7 +25,7 @@ function CourseItem({ course }) {
             alt={check ? "Youtube" : "Chapter"}
           />
           <h2 className="text-[14px] text-gray-500">
-            {check ? "What on Youtube" : "Chapter"}
+            {check ? "Whatch on Youtube" : "Chapter"}
           </h2>
         </div>
 
