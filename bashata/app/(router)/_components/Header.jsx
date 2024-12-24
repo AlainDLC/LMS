@@ -5,7 +5,6 @@ function Header() {
   return (
     <>
       <div className="p-4 bg-white flex justify-between">
-        <SquareMenu />
         <div className="flex gap-2 border rounded-md p-2">
           <Search className="h-5 w-5" />
           <input type="text" placeholder="Search..." className="outline-none" />

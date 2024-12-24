@@ -5,6 +5,7 @@ import {
   GraduationCap,
   LayoutGrid,
   Mail,
+  SquareMenu,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -46,8 +47,9 @@ function SideNav() {
   ];
   const path = usePathname();
   return (
-    <div className="p-5 bg-white shadow-sm border h-screen  overflow-y-scroll scrollbar-hide">
+    <div className="p-5 bg-white shadow-sm border h-screen  overflow-y-scroll scrollbar-hide ">
       <Image priority src="/kaw.jpg" alt="kawa" width={70} height={50} />
+      <SquareMenu />
       <hr className="mt-8"></hr>
       <div className="mt-5">
         {menu.map((item, index) => (
