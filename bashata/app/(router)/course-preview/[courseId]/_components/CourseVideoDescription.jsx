@@ -3,8 +3,8 @@ import VideoPlayer from "./VideoPlayer";
 import Markdown from "react-markdown";
 
 function CourseVideoDescription({ courseInfo }) {
-  const videocourses =
-    courseInfo?.chapter?.video?.url || courseInfo?.chapter[0]?.video?.url;
+  const videocourses = courseInfo?.chapter[0]?.video?.url;
+
   return (
     courseInfo && (
       <div>

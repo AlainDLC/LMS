@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import React from "react";
 
 function CourseEnrollSection() {
-  const membership = false;
+  const membership = true;
   return (
     <div className="p-3 text-center rounded-sm bg-primary ">
       {membership ? (
