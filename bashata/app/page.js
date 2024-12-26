@@ -1,5 +1,22 @@
-import { Button } from "@/components/ui/button";
+"use client";
+import { UserButton, useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Home() {
-  return <Button>Button</Button>;
+  const router = useRouter();
+  const { user, isLoaded } = useUser();
+
+  useEffect(() => {
+    if (user) {
+      router.push("/dashboard");
+    } else {
+      isLoaded && router.push("/courses");
+    }
+  }, [user]);
+  return (
+    <div className="h-screen">
+      <UserButton afterSwitchSessionUrl="/sign-in" />
+    </div>
+  );
 }
