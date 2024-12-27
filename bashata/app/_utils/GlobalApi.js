@@ -128,9 +128,28 @@ const enrollToCourse = async (courseId, email) => {
   return result;
 };
 
+const checkUserEnrolledToCourse = async (courseId, email) => {
+  const query =
+    gql`
+query MyQuery {
+  userEnrollCourses(where: {courseId:"` +
+    courseId +
+    `", userEmail: "` +
+    email +
+    `"}) {
+    id
+  }
+}
+  `;
+
+  const result = await request(MASTER_URL, query);
+  return result;
+};
+
 export default {
   getAllCourseList,
   getSideBanner,
   getCourseById,
   enrollToCourse,
+  checkUserEnrolledToCourse,
 };
