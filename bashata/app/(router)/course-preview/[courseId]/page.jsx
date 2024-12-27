@@ -23,7 +23,7 @@ function CoursePreview({ params }) {
         <CourseVideoDescription courseInfo={courseInfo} />
       </div>
       <div>
-        <CourseEnrollSection />
+        <CourseEnrollSection courseInfo={courseInfo} />
         <CourseContentSection courseInfo={courseInfo} />
       </div>
     </div>
