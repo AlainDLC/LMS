@@ -3,6 +3,7 @@ import React from "react";
 function VideoPlayer({ videoUrl, poster }) {
   return (
     <video
+      key={videoUrl}
       width={1000}
       height={250}
       controls

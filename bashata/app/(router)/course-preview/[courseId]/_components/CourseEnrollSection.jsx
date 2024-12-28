@@ -13,7 +13,7 @@ function CourseEnrollSection({ courseInfo, isUserAlreadyEnrolled }) {
   const router = useRouter();
 
   useEffect(() => {
-    console.log("inloggad", isUserAlreadyEnrolled);
+    console.log(isUserAlreadyEnrolled);
   }, [isUserAlreadyEnrolled]);
 
   const onEnrollCourse = () => {

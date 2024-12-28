@@ -2,7 +2,12 @@
 import { Lock, Play } from "lucide-react";
 import React, { useState } from "react";
 
-function CourseContentSection({ courseInfo, isUserAlreadyEnrolled }) {
+function CourseContentSection({
+  courseInfo,
+  isUserAlreadyEnrolled,
+  watchMode = false,
+  setActiveChapterIndex,
+}) {
   const [activeIndex, setActiveIndex] = useState(0);
   return (
     <div className="p-3 bg-white rounded-sm mt-3">
@@ -13,6 +18,10 @@ function CourseContentSection({ courseInfo, isUserAlreadyEnrolled }) {
             className={`p-2 text-[14px] flex items-center justify-between border rounded-sm px-4 cursor-pointer m-2 hover:bg-gray-200 hover:text-gray-500 ${
               activeIndex == index && "bg-primary text-white"
             } ${isUserAlreadyEnrolled && "hover:bg-primary hover:text-white"}`}
+            onClick={() => {
+              watchMode && setActiveChapterIndex(index);
+              watchMode && setActiveIndex(index);
+            }}
           >
             {index + 1}. {item.name}
             {activeIndex == index || isUserAlreadyEnrolled ? (
