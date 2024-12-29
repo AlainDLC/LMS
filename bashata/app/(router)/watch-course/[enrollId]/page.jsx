@@ -31,6 +31,7 @@ function WatchCourse({ params }) {
             courseInfo={courseInfo}
             activeChapterIndex={activeChapterIndex}
             watchMode={true}
+            setChapterCompleted={(chapterId) => console.log(chapterId)}
           />
         </div>
         <div>
