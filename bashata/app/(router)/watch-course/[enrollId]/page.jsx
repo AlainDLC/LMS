@@ -5,11 +5,13 @@ import React, { useEffect, useState } from "react";
 import CourseVideoDescription from "../../course-preview/[courseId]/_components/CourseVideoDescription";
 import CourseEnrollSection from "../../course-preview/[courseId]/_components/CourseEnrollSection";
 import CourseContentSection from "../../course-preview/[courseId]/_components/CourseContentSection";
+import { toast } from "@/hooks/use-toast";
 
 function WatchCourse({ params }) {
   const { user, isLoaded } = useUser();
   const [courseInfo, setCourseInfo] = useState([]);
   const [activeChapterIndex, setActiveChapterIndex] = useState(0);
+  const [completedChapter, setCompletedChapter] = useState([]);
 
   useEffect(() => {
     isLoaded && params && user && getUserEnrolledCourseDetail();
@@ -19,7 +21,19 @@ function WatchCourse({ params }) {
       params?.enrollId,
       user?.primaryEmailAddress?.emailAddress
     ).then((resp) => {
+      setCompletedChapter(resp.userEnrollCourses[0].completedChapter);
       setCourseInfo(resp.userEnrollCourses[0].courseList);
+    });
+  };
+
+  const onChapterComplete = (chapterId) => {
+    GlobalApi.markChapterCompleted(params.enrollId, chapterId).then((resp) => {
+      if (resp) {
+        toast({
+          title: "Chapter Marked as completed",
+        });
+        getUserEnrolledCourseDetail();
+      }
     });
   };
 
@@ -31,13 +45,14 @@ function WatchCourse({ params }) {
             courseInfo={courseInfo}
             activeChapterIndex={activeChapterIndex}
             watchMode={true}
-            setChapterCompleted={(chapterId) => console.log(chapterId)}
+            setChapterCompleted={(chapterId) => onChapterComplete(chapterId)}
           />
         </div>
         <div>
           <CourseContentSection
             courseInfo={courseInfo}
             isUserAlreadyEnrolled={true}
+            completedChapter={completedChapter}
             watchMode={true}
             setActiveChapterIndex={(index) => setActiveChapterIndex(index)}
           />
