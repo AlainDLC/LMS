@@ -3,7 +3,6 @@ import GlobalApi from "@/app/_utils/GlobalApi";
 import { useUser } from "@clerk/nextjs";
 import React, { useEffect, useState } from "react";
 import CourseVideoDescription from "../../course-preview/[courseId]/_components/CourseVideoDescription";
-import CourseEnrollSection from "../../course-preview/[courseId]/_components/CourseEnrollSection";
 import CourseContentSection from "../../course-preview/[courseId]/_components/CourseContentSection";
 import { toast } from "@/hooks/use-toast";
 

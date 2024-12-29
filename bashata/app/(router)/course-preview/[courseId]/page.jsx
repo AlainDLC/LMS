@@ -30,7 +30,6 @@ function CoursePreview({ params }) {
       courseInfo?.slug,
       user?.primaryEmailAddress?.emailAddress
     ).then((resp) => {
-      console.log(resp);
       if (isLoaded && resp?.userEnrollCourses[0]?.id) {
         setIsUserAlreadyEnrolled(isLoaded && resp?.userEnrollCourses[0]?.id);
       }
