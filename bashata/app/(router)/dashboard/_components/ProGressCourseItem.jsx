@@ -12,7 +12,7 @@ function ProgressCourseItem({ course }) {
 
     // Kolla andelen genomförda kapitel
     const perc =
-      (item.completedChapter.length / item.courseList.chapter.length) * 10;
+      (item.completedChapter.length / item.courseList.chapter.length) * 100;
 
     // Avrunda till närmaste heltal
     return Math.round(perc); // Returnera korrekt procent

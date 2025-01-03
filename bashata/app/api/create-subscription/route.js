@@ -6,20 +6,20 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export async function POST(request) {
   try {
-    const customerId = "cus_RVnK1lOzb2FmaL"; // Hämta det aktuella kundens ID
-    const priceId = "price_1Qckxi2f2Z8QhYWImkffvVRe"; // Ditt price_id
+    const body = await request.json();
+    const priceId = body.priceId; // Få priceId från requesten
 
     // Skapa checkout-sessionen
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: [
         {
-          price: priceId, // Ersätt med ditt eget price_id
+          price: priceId, // Använd rätt priceId som skickades från klienten
           quantity: 1,
         },
       ],
-      mode: "subscription",
-      success_url: `${process.env.NEXT_PUBLIC_URL}/success?session_id={CHECKOUT_SESSION_ID}`, // Success-URL med session_id
+      mode: "subscription", // Kan också vara "payment" om det är en engångsbetalning
+      success_url: `${process.env.NEXT_PUBLIC_URL}/success?session_id={CHECKOUT_SESSION_ID}`, // Success-URL
       cancel_url: `${process.env.NEXT_PUBLIC_URL}/cancel`, // Cancel-URL
     });
 

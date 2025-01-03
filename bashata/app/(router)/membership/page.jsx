@@ -10,6 +10,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import InProgressCourseList from "../dashboard/_components/InProgressCourseList";
+import { Progress } from "@/components/ui/progress";
 
 // Hämta Stripe-instansen
 const getStripe = () => {
@@ -29,15 +31,18 @@ const fetchPostJSON = async (url, data) => {
 };
 
 export default function CheckoutButton() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingAllAccess, setIsLoadingAllAccess] = useState(false);
+  const [isLoadingIndividual, setIsLoadingIndividual] = useState(false);
 
-  const handleCheckout = async () => {
-    setIsLoading(true);
+  // Hantera checkout och skapa session
+  const handleCheckout = async (priceId, isAllAccess) => {
+    if (isAllAccess) setIsLoadingAllAccess(true);
+    else setIsLoadingIndividual(true);
 
     try {
       // Skicka begäran till API-rutten för att skapa en checkout-session
       const checkoutSession = await fetchPostJSON("/api/create-subscription", {
-        priceId: "price_1Qckxi2f2Z8QhYWImkffvVRe", // Använd ett giltigt priceId från Stripe Dashboard
+        priceId, // Skicka specifikt priceId för det valda kortet
       });
 
       if (checkoutSession.statusCode === 500) {
@@ -57,53 +62,85 @@ export default function CheckoutButton() {
     } catch (error) {
       console.error("Error:", error);
     } finally {
-      setIsLoading(false);
+      if (isAllAccess) setIsLoadingAllAccess(false);
+      else setIsLoadingIndividual(false);
     }
   };
+  const Spinner = () => (
+    <div className="w-44 bg-gray-200 rounded-full h-2.5">
+      <div className="bg-green-300 h-2.5 rounded-full animate-progress"></div>
+    </div>
+  );
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
-      {/* Första kortet – Alla kurser upplåsta */}
-      <Card className="bg-white shadow-lg rounded-lg p-4">
-        <CardHeader>
-          <CardTitle>Subscription – Alla kurser upplåsta</CardTitle>
-          <CardDescription>
-            Få tillgång till alla kurser och material utan begränsningar.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p>
-            Med detta abonnemang får du full tillgång till alla våra kurser och
-            innehåll på plattformen.
-          </p>
-        </CardContent>
-        <CardFooter>
-          <Button onClick={handleCheckout} disabled={isLoading}>
-            {isLoading ? "Redirecting..." : "Proceed to Checkout"}
-          </Button>
-        </CardFooter>
-      </Card>
+    <div className="min-h-screen">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-6 w-full mx-auto mt-4">
+        {/* First card – All courses unlocked */}
+        <Card className="bg-white shadow-lg rounded-lg p-4">
+          <CardHeader>
+            <CardTitle>Subscription – All courses unlocked</CardTitle>
+            <CardDescription>
+              Get access to all courses and materials without limitations.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p>
+              With this subscription, you get full access to all our courses and
+              content on the platform.
+            </p>
+          </CardContent>
+          <CardFooter>
+            {isLoadingAllAccess ? (
+              <div className="flex items-center justify-center w-full h-9">
+                <Spinner />
+              </div>
+            ) : (
+              <Button
+                onClick={() =>
+                  handleCheckout("price_1QdAWO2f2Z8QhYWIEDLpKCPb", true)
+                }
+                disabled={isLoadingAllAccess}
+                className="w-full"
+              >
+                Checkout now
+              </Button>
+            )}
+          </CardFooter>
+        </Card>
 
-      {/* Andra kortet – Enskilda kurser */}
-      <Card className="bg-white shadow-lg rounded-lg p-4">
-        <CardHeader>
-          <CardTitle>Subscription – Enskilda kurser</CardTitle>
-          <CardDescription>
-            Välj och betala för enskilda kurser.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p>
-            Med detta abonnemang kan du välja specifika kurser och betala för
-            dem individuellt.
-          </p>
-        </CardContent>
-        <CardFooter>
-          <Button onClick={handleCheckout} disabled={isLoading}>
-            {isLoading ? "Redirecting..." : "Proceed to Checkout"}
-          </Button>
-        </CardFooter>
-      </Card>
+        {/* Second card – Individual courses */}
+        <Card className="bg-white shadow-lg rounded-lg p-4">
+          <CardHeader>
+            <CardTitle>Subscription – Individual courses</CardTitle>
+            <CardDescription>
+              Choose and pay for individual courses.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p>
+              With this subscription, you can choose specific courses and pay
+              for them individually.
+            </p>
+          </CardContent>
+          <CardFooter>
+            {isLoadingIndividual ? (
+              <div className="flex items-center justify-center w-full h-9">
+                <Spinner />
+              </div>
+            ) : (
+              <Button
+                onClick={() =>
+                  handleCheckout("price_1Qckxi2f2Z8QhYWImkffvVRe", false)
+                }
+                disabled={isLoadingIndividual}
+                className="w-full"
+              >
+                Checkout now
+              </Button>
+            )}
+          </CardFooter>
+        </Card>
+      </div>
     </div>
   );
 }
