@@ -1,4 +1,3 @@
-// app/api/create-subscritpion/route.js
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
@@ -20,10 +19,11 @@ export async function POST(request) {
         },
       ],
       mode: "subscription",
-      success_url: `${process.env.NEXT_PUBLIC_URL}/success`, // Se till att NEXT_PUBLIC_URL är en korrekt fullständig URL
-      cancel_url: `${process.env.NEXT_PUBLIC_URL}/cancel`, // Se till att NEXT_PUBLIC_URL är en korrekt fullständig URL
+      success_url: `${process.env.NEXT_PUBLIC_URL}/success?session_id={CHECKOUT_SESSION_ID}`, // Success-URL med session_id
+      cancel_url: `${process.env.NEXT_PUBLIC_URL}/cancel`, // Cancel-URL
     });
 
+    // Returnera sessionens id till klienten
     return NextResponse.json({ id: session.id });
   } catch (error) {
     console.error("Error creating subscription:", error);
